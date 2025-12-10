@@ -103,5 +103,47 @@
         "gender": "male",
         "origin": "German",
         "meaning": "Home ruler"
+    },
+    {
+        "id": 16,
+        "name": "Wei (伟)",
+        "gender": "male",
+        "origin": "Chinese",
+        "meaning": "Great, magnificent"
+    },
+    {
+        "id": 17,
+        "name": "Li (丽)",
+        "gender": "female",
+        "origin": "Chinese",
+        "meaning": "Beautiful"
+    },
+    {
+        "id": 18,
+        "name": "Jun (俊)",
+        "gender": "male",
+        "origin": "Chinese",
+        "meaning": "Handsome, talented"
+    },
+    {
+        "id": 19,
+        "name": "Fang (芳)",
+        "gender": "female",
+        "origin": "Chinese",
+        "meaning": "Fragrant"
+    },
+    {
+        "id": 20,
+        "name": "Ming (明)",
+        "gender": "male",
+        "origin": "Chinese",
+        "meaning": "Bright, clear"
+    },
+    {
+        "id": 21,
+        "name": "Xiu (秀)",
+        "gender": "female",
+        "origin": "Chinese",
+        "meaning": "Elegant, beautiful"
     }
 ]

@@ -6,6 +6,7 @@ import HarmonyMeter from './components/HarmonyMeter';
 
 function App() {
     const [activeTab, setActiveTab] = useState('generator');
+    const [generatorType, setGeneratorType] = useState('english'); // 'english' or 'chinese'
     const [names, setNames] = useState([]);
     const [filters, setFilters] = useState({ gender: '', origin: '', search: '' });
     const [matchInput, setMatchInput] = useState({ name1: '', name2: '' });
@@ -23,14 +24,31 @@ function App() {
         if (filters.origin) params.append('origin', filters.origin);
         if (filters.search) params.append('search', filters.search);
 
+        // If in Chinese mode, we might want to filter by origin 'Chinese' automatically or handle it in UI
+        // For now, let's fetch all and filter client side or let the user filter.
+        // Actually, let's pass the type to the backend or filter here.
+        // Let's filter client-side for simplicity since we have all names.
+
         try {
             const res = await fetch(`http://localhost:3000/api/names?${params}`);
             const data = await res.json();
-            setNames(data);
+
+            // Client-side filtering for the section
+            const filtered = data.filter(n => {
+                if (generatorType === 'chinese') return n.origin === 'Chinese';
+                return n.origin !== 'Chinese';
+            });
+
+            setNames(filtered);
         } catch (err) {
             console.error("Failed to fetch names", err);
         }
     };
+
+    // Refetch when generator type changes
+    useEffect(() => {
+        fetchNames();
+    }, [generatorType]);
 
     const handleMatch = async (e) => {
         e.preventDefault();
@@ -110,6 +128,34 @@ function App() {
                         exit={{ opacity: 0, x: 20 }}
                         transition={{ duration: 0.3 }}
                     >
+                        {/* Sub-tabs for English / Chinese */}
+                        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem', gap: '1rem' }}>
+                            <button
+                                onClick={() => setGeneratorType('english')}
+                                style={{
+                                    padding: '0.5rem 1.5rem',
+                                    borderRadius: '20px',
+                                    background: generatorType === 'english' ? 'var(--color-primary)' : 'rgba(255,255,255,0.1)',
+                                    color: generatorType === 'english' ? '#000' : '#fff',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                English Names
+                            </button>
+                            <button
+                                onClick={() => setGeneratorType('chinese')}
+                                style={{
+                                    padding: '0.5rem 1.5rem',
+                                    borderRadius: '20px',
+                                    background: generatorType === 'chinese' ? 'var(--color-primary)' : 'rgba(255,255,255,0.1)',
+                                    color: generatorType === 'chinese' ? '#000' : '#fff',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                Chinese Names
+                            </button>
+                        </div>
+
                         {/* Filters */}
                         <div className="glass-panel" style={{ padding: '1.5rem', marginBottom: '2rem', display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
                             <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
