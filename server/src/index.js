@@ -11,7 +11,7 @@ app.use(express.json());
 
 // Get all names with optional filters
 app.get('/api/names', (req, res) => {
-    const { gender, origin, search } = req.query;
+    const { gender, origin, search, theme, length, firstLetter } = req.query;
 
     let results = names;
 
@@ -25,6 +25,24 @@ app.get('/api/names', (req, res) => {
 
     if (search) {
         results = results.filter(n => n.name.toLowerCase().includes(search.toLowerCase()));
+    }
+
+    if (theme) {
+        results = results.filter(n => n.themes && n.themes.includes(theme));
+    }
+
+    if (length) {
+        results = results.filter(n => {
+            const len = n.name.length;
+            if (length === 'short') return len >= 2 && len <= 4;
+            if (length === 'medium') return len >= 5 && len <= 7;
+            if (length === 'long') return len >= 8;
+            return true;
+        });
+    }
+
+    if (firstLetter) {
+        results = results.filter(n => n.name.toLowerCase().startsWith(firstLetter.toLowerCase()));
     }
 
     res.json(results);
