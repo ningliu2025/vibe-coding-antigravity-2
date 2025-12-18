@@ -2,7 +2,11 @@ require('dotenv').config();
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 async function testMatch() {
-    const apiKey = process.env.GEMINI_API_KEY || "AIzaSyDMwSMa8zIxv7EZwf9x0e_R8A9ZVRnDvtE";
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+        console.error("Error: GEMINI_API_KEY not set in .env");
+        return;
+    }
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
